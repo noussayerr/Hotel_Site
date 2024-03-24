@@ -3,17 +3,21 @@ import { Link } from "react-router-dom"
 import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { useOutletContext } from 'react-router-dom'
 function Login() {
-
+  
+  const {handeluserstate}=useOutletContext();
   const [email,setEmail]=useState("")
   const [password,setPassword]=useState("")
   const [errs,setErr]=useState("")
-  const [token, setToken] = useState("")
   const navigate = useNavigate()
   const loginuser=(e)=>{
     e.preventDefault();
     axios.post("/api/login",{email,password},{withCredentials: true})
+
     .then(res=>{
+
+      handeluserstate(res.data.id)
       navigate('/profil')
     })
     .catch(err=>setErr(err.response.data))

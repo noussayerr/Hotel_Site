@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import axios from 'axios'
-import { GoUpload } from "react-icons/go";
+
 import { useNavigate } from "react-router-dom"
 function Create() {
   const [email,setEmail]=useState("")
@@ -12,18 +12,28 @@ function Create() {
   const [phonenumber,setPhonenumber]=useState()
   const [state,setState]=useState("")
   const [errs,setErr]=useState("")
+  const [file, setFile] = useState()
   const navigate = useNavigate()
   const  registeruser = (e)=>{
     e.preventDefault();
-    axios.post("/api/register",{email,password,confirmPassword,firstName,lastName,phonenumber,state},{withCredentials: true})
+    const formData = new FormData()
+    formData.append("email", email)
+    formData.append("password", password)
+    formData.append("confirmPassword", confirmPassword)
+    formData.append("firstName", firstName)
+    formData.append("lastName", lastName)
+    formData.append("phonenumber", phonenumber)
+    formData.append("state", state)
+    formData.append("image", file)
+
+    axios.post("/api/register",formData,{ headers: {'Content-Type': 'multipart/form-data'}},{withCredentials: true})
     .then(res=>{
       console.log(res)
-      navigate('/profil')
+      navigate('/login')
     })
-    .catch(err=>setErr(err.response.data.errors))
+    .catch(err=>{setErr(err.response.data.errors)})
     
   }
-
   return (
     <div className="w-80 max-w-xl mx-auto md:w-auto ">
     <form className="bg-[#D8DBDE] shadow-2xl rounded-2xl px-8 pt-6 pb-8 mb-4 " 
@@ -44,6 +54,7 @@ function Create() {
                 :
                 null
             }
+            
       </div>
 
       <div className="mb-6">
@@ -147,10 +158,15 @@ function Create() {
                 null
             }
         </div>
-        
       </div>
+        <input
+           className='mb-5'
+          onChange={e => setFile(e.target.files[0])} 
+          type="file" 
+          accept="image/*"
+        />
         <div className="items-center justify-between">
-        <button className=" bg-[#469924] hover:bg-[#affa4d] border-black border-2 text-white font-bold py-2 px-4 rounded-lg  " type="submit">
+        <button className=" bg-[#469924] hover:bg-[#affa4d]  text-white font-bold py-2 px-4 rounded-lg  " type="submit">
             Register new account
         </button>
         </div>

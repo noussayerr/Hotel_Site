@@ -13,4 +13,5 @@ const port=process.env.port
 
 require("./config/server.config")
 require('./routes/user.routes')(app)
+require('./routes/place.routes')(app)
 app.listen(port ,()=> console.log (`listen on port ${port}`))

@@ -48,7 +48,6 @@ function Footer() {
                 <div className='flex items-center flex-wrap md:flex-nowrap justify-between border-t-2 border-[#DDDDDD] py-4'>
                     <p>&copy;2024 hotel</p>
                     <div className='flex items-center gap-4 py-4 md:py-0'>
-                        <p>€ EUR</p>
                         <FaFacebook />
                         <IoLogoInstagram />
                         <FaTwitter />

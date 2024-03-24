@@ -6,25 +6,20 @@ module.exports ={
     
     register: async (req, res) => {
         
-        const user= await User.findOne({email :req.body.email});
-        if (user){
-            return res.status(400).json ({ msg : "email already exists ,please login" });
+        const finduser= await User.findOne({email :req.body.email});
+        if (finduser){
+            return res.status(400).json ({ errors  : "email already exists ,please login" });
         }
         else{
-            
-            User.create(req.body)
-              .then(user => {
-                  const userToken = jwt.sign({
-                      id: User._id
-                  }, process.env.SECRET_KEY,{expiresIn:'2h'});
-           
-                  res
-                      .cookie("usertoken", userToken, {
-                          httpOnly: true
-                      })
-                      .json({ msg: "success!", user: user });
-              })
-              .catch(err => res.status(400).json(err));
+            const {email,password,confirmPassword,firstName,lastName,phonenumber,state}=req.body
+            const filename=req.file.filename
+            const newuser={email,password,confirmPassword,firstName,lastName,phonenumber,state,filename}
+            User.create(newuser)
+            .then(user=>{
+                res.json({ msg: "success!", user: user });
+            }
+            )
+            .catch(err => res.json(err));
         }
       },
     
@@ -55,7 +50,7 @@ module.exports ={
             .cookie("usertoken", userToken, {
                 httpOnly: true
             })
-            .json({ msg: "success!" });
+            .json({ id :user._id });
     },
 
     logout: async(req, res) => {
