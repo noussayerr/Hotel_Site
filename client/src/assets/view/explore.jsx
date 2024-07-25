@@ -25,13 +25,13 @@ function Explore() {
 
       {
         places.map((place,index)=>(
-          <Card key={index} className="mt-6 w-96 h-96 mb-5">
-                <CardHeader >
+          <Card key={index} className="mt-6 w-96  mb-5">
+                <CardHeader className='h-56' >
                     <Photos place={place.photos} />
                 </CardHeader>
                 <Link to={"/place/"+place._id}>
-                <CardBody>
-                  <Typography variant="h5"  className="mb-2">
+                <CardBody className=''>
+                  <Typography variant="h5">
                     {place.title}
                   </Typography>
                   <Typography>
@@ -39,7 +39,7 @@ function Explore() {
                   </Typography>
                   
                 </CardBody>
-                <CardFooter className="pt-0 gap-4">
+                <CardFooter className="pt-0">
                   <Typography variant="h5" className='flex gap-4 items-center justify-end' >
                     ${place.price}
                     <Button className='bg-[#469924]'>Book</Button>
